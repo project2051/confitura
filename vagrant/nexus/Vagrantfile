@@ -1,0 +1,24 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "precise64"
+  config.vm.network :private_network, ip: "10.2.0.2"
+  config.vm.network :forwarded_port, guest: 8081, host: 8080
+
+  config.vm.synced_folder "./nexus", "/srv/sonatype-work/nexus", create: true
+
+  config.vm.provision :puppet do |puppet|
+     puppet.manifests_path = "puppet/manifests"
+     puppet.module_path = "puppet/modules"
+   end
+
+   config.vm.provider :virtualbox do |vb|
+     #vb.gui = true
+     vb.customize ["modifyvm", :id, "--memory", "1024"]
+   end
+  
+#  config.vm.provision "shell", inline: "service nexus restart", run: "always"
+end

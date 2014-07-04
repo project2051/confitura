@@ -1,0 +1,21 @@
+web:
+  image: ctlc/wordpress
+  ports:
+    - 80:80
+  environment:
+    DB_NAME: wordpress
+    DB_USER: admin
+    DB_PASSWORD: figftw
+  links:
+    - db
+db:
+  image: ctlc/mysql
+  ports:
+    - 3306
+  volumes:
+    - /mysql:/var/lib/mysql
+  environment:
+    MYSQL_ROOT_PASSWORD: qa1N76pWAri9
+    MYSQL_DATABASE: wordpress
+    MYSQL_USER: admin
+    MYSQL_PASSWORD: figftw
